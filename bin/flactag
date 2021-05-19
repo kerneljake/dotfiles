@@ -1,0 +1,66 @@
+#!/usr/bin/env perl
+# modify FLAC tags using metaflac
+
+use Getopt::Std;
+
+$0 =~ s#.*/##;
+
+# this array drives everything
+%options = ('a', 'ARTIST',
+	    'b', 'ALBUM',
+            'c', 'ALBUMARTIST',
+	    'd', 'DISCNUMBER',
+	    'e', 'DISCTOTAL',
+	    'g', 'GENRE',
+            'l', 'TRACKTOTAL',
+            'n', 'TRACKNUMBER',
+	    't', 'TITLE',
+	    'y', 'DATE'
+);
+
+# build USAGE
+foreach $option (sort keys %options) {
+	$usage .= " [-$option " . lc($options{$option}) . "]";
+}
+$USAGE = "USAGE: $0$usage files...\n";
+$USAGE .= "(Specify argument of 'nil' to remove a tag, example: $0 -y nil)\n";
+die "$USAGE" if !@ARGV || grep(/^--help$/, @ARGV);
+
+# parse options and arguments
+$optarg = join(':', keys(%options)) . ':'; # example:  a:m:g:t:d:
+getopt($optarg, \%getopt); # pass reference to array
+
+# show existing tags & exit if no arguments provided
+grep(s/(\W)/\\\1/g, @ARGV); # escape non-word chars in filenames for shell
+if (0 == %getopt) {
+	system("metaflac --list --block-type=VORBIS_COMMENT @ARGV");
+	exit;
+}
+
+foreach $option (keys %getopt) {
+	$tagname = $options{$option};
+	$value = $getopt{$option};
+	if ($value =~ m/^s\W/) {
+		# it's a regex, read the existing tag
+		foreach $filename (@ARGV) {
+			# TODO: what if tag does not exist
+			$existing_tag = `metaflac --show-tag=$tagname $filename` || die "could not process $filename";
+			chomp $existing_tag;
+			$existing_tag =~ s/^$tagname=//i; # a field consists of NAME=VALUE
+			$_ = $existing_tag;
+			eval $value;
+			$new_tag = $_;
+			#print "new $tagname is $new_tag\n";
+			$metaflac_for_this{$filename} .= " --remove-first-tag=$tagname";
+			$metaflac_for_this{$filename} .= " --set-tag=\"$tagname=$new_tag\"" unless 'nil' eq $value;
+		}
+	} else {
+		$metaflac_for_all .= " --remove-first-tag=$tagname";
+		$metaflac_for_all .= " --set-tag=\"$tagname=$value\"" unless 'nil' eq $value;
+	}
+}
+foreach $filename (@ARGV) {
+	$command = "metaflac $metaflac_for_this{$filename} $metaflac_for_all $filename";
+	#print "$command\n";
+	system($command);
+}
