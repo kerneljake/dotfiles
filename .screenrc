@@ -1,0 +1,4 @@
+escape ^jj
+startup_message off
+# set a big scrolling buffer
+defscrollback 50000

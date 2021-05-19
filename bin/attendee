@@ -1,0 +1,18 @@
+#!/usr/bin/env perl
+# convert a list of email addresses from Google calendar invite into names
+# todo: parse the name in double quotes and reverse "last, first" if there is a comma
+
+while (<>) {
+	next unless m/^[\w\"\<]/;
+	chomp;
+	foreach (split(/,/)) {              # this likely won't work for "This, Like"
+		if (m/@/) {
+			m/([\w+\.]+)@/;     # find everything up until the @
+			$_ = $1;            # convenience
+			s/([\w]+)/\u\L$1/g; # capitalize words, see https://stackoverflow.com/a/163826/7015912
+			s/[_\.]/ /g;	    # turf underscores and periods
+		}
+		push(@attendees, $_);
+	}
+}
+print join("\n", @attendees), "\n";

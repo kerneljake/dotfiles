@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+# from maf+@osu.edu
+# Usage: rename perlexpr [files]
+
+($op = shift) || die "Usage: rename perlexpr [filenames]\n";
+if (!@ARGV) {
+    @ARGV = <STDIN>;
+    chop(@ARGV);
+}
+for (@ARGV) {
+    $was = $_;
+    eval $op;       # $_ set here
+    die $@ if $@;
+    rename($was,$_) unless $was eq $_;
+}
