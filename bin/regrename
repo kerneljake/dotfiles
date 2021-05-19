@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # from maf+@osu.edu
 # Usage: rename perlexpr [files]
 
