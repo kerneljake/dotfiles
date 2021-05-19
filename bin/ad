@@ -1,0 +1,39 @@
+#!/usr/bin/env perl
+#
+# A prettier ASCII dump than 'od -a'.      joa+@osu.edu
+#
+# see also linux 'xxd'
+# depricated on bsd in favor of "hexdump -C"
+
+$WIDTH = 15;			# width of an input chunk
+$FORMAT = "%3.3s " x $WIDTH;	# printf formatting for the chunk
+
+# non-printable ascii characters - used for table lookup
+
+@ascii = ('nul', 'soh', 'stx', 'etx', 'eof', 'enq', 'ack', 'bel', 
+'bs', 'ht', 'nl', 'vt', 'ff', 'cr', 'so', 'si', 'dle', 'dc1',
+'dc2', 'dc3', 'dc4', 'nak', 'syn', 'etb', 'can', 'em', 'sub', 'esc',
+'fs', 'gs', 'rs', 'us', 'sp');
+@ascii[127] = 'del'; # del isn't with the rest
+
+open(STDIN,$ARGV[0]) || die "Can't open $ARGV[0]: $!\n" if $ARGV[0];
+
+while (($len = read(STDIN,$data,$WIDTH)) > 0 ) {
+
+    $data =~ tr/\200-\377/\0-177/; # map high ascii to low ascii
+
+    @array = split(//, $data);
+
+    for (@array) {		# convert non-printing characters to mnemonics
+	$_ = @ascii[ord($_)] if (ord($_) <= 32 || ord($_) == 127);
+    }
+
+    if ($len < $WIDTH) { 	# it's the last line, so pad with blanks
+	push(@array, '    ') while $len++ < $WIDTH;
+    }
+
+    printf ("$FORMAT   ", @array);  # print the individual characters
+
+    $data =~ tr/\0-\37\177-\377/~/; # salt unprintable characters
+    print $data, "\n";		    # print the trailing reference portion
+}
