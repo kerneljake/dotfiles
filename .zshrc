@@ -10,5 +10,5 @@ export LESSOPEN='|~/.lessfilter %s'
 
 function recent() { ls -lt $* | head -22; }
 
-export PS1=$'\n'"%~"$'\n'"%n@%m %# "
+export PS1=$'\n'"%~"$'\n'"%n@%B%m%b %# "
 export PATH="$HOME/bin:$PATH"
