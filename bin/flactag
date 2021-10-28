@@ -23,7 +23,8 @@ foreach $option (sort keys %options) {
 	$usage .= " [-$option " . lc($options{$option}) . "]";
 }
 $USAGE = "USAGE: $0$usage files...\n";
-$USAGE .= "(Specify argument of 'nil' to remove a tag, example: $0 -y nil)\n";
+$USAGE .= "\t- argument of 'nil' removes a tag, example: $0 -c nil\n";
+$USAGE .= "\t- argument of PCRE search/replace will replace a value, example: $0 -b 's/foo/bar/'\n";
 die "$USAGE" if !@ARGV || grep(/^--help$/, @ARGV);
 
 # parse options and arguments

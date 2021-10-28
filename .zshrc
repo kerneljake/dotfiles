@@ -4,11 +4,14 @@
 
 alias ls='ls -CFs'
 alias mygit='git --git-dir=$HOME/.mygit/ --work-tree=$HOME'
+alias history='history 1'
 
-export LESS='CRiM'
+export LESS=CRiM
 export LESSOPEN='|~/.lessfilter %s'
+export PAGER=less
 
 function recent() { ls -lt $* | head -22; }
+function dos2unix() { perl -p -i -e 's/\r\n/\n/' $* }
 
 export PS1=$'\n'"%~"$'\n'"%n@%B%m%b %# "
 export PATH="$HOME/bin:$PATH"
