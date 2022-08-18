@@ -5,11 +5,13 @@ case "$1" in
     *.lsp|*.l|*.pas|*.p|*.axp|*.ppd|*.pov|\
     *.ad[asb]|*.asm|*.inc|*.[ch]|*.[ch]pp|*.[ch]xx|*.cc|*.hh|\
     *.diff|*.patch|*.rb|*.sql|*.ebuild|*.eclass|*.md|\
-    *.java|*.py|*.xml|*.xps|*.xsl|\
+    *.java|*.groovy|*.py|*.xml|*.xps|*.xsl|\
     .bashrc|.bash_aliases|.bash_environment)
 	pygmentize -O style=monokai "$1";;
+    *.jmx)
+	pygmentize -O style=monokai -l xml "$1";;
     *)
-        grep "#\!/bin/bash" "$1" > /dev/null
+        head -1 "$1" | grep "#\!/bin/bash" > /dev/null
         if [ "$?" -eq "0" ]; then
             pygmentize -f 256 -l sh "$1"
         else

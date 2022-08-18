@@ -12,6 +12,7 @@ export PAGER=less
 
 function recent() { ls -lt $* | head -22; }
 function dos2unix() { perl -p -i -e 's/\r\n/\n/' $* }
+function over() { cd ../$* }
 
 export PS1=$'\n'"%~"$'\n'"%n@%B%m%b %# "
 export PATH="$HOME/bin:$PATH"
