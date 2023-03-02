@@ -9,6 +9,7 @@ alias history='history 1'
 export LESS=CRiM
 export LESSOPEN='|~/.lessfilter %s'
 export PAGER=less
+export EDITOR=vi
 
 function recent() { ls -lt $* | head -22; }
 function dos2unix() { perl -p -i -e 's/\r\n/\n/' $* }
