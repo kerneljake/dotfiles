@@ -10,6 +10,7 @@ export LESS=CRiM
 export LESSOPEN='|~/.lessfilter %s'
 export PAGER=less
 export EDITOR=vi
+bindkey -e
 
 function recent() { ls -lt $* | head -22; }
 function dos2unix() { perl -p -i -e 's/\r\n/\n/' $* }
