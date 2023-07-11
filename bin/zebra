@@ -1,10 +1,15 @@
 #!/usr/bin/env perl
 # pretty print spaced lines while removing duplicate blank lines
+# USAGE: $0 [-s] [FILES...]
+#  -s reverse the semantic so that blank lines are squeezed out instead of inserted
+
+use Getopt::Std;
+getopts('s');
 
 $| = 1;
 while (<>) {
 	if ($_ !~ /^$/) {
 		print $n ? "\n" : '' , $_; # very first line will have no preceeding \n
-		$n=1;
+		$n=1 unless $opt_s;
 	}
 }
