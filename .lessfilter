@@ -3,7 +3,7 @@
 case "$1" in
     *.yaml|?akefile|*.json|*.awk|*.groff|*.js|*.m4|*.php|*.pl|*.pm|*.pod|*.sh|*.html|\
     *.lsp|*.l|*.pas|*.p|*.axp|*.ppd|*.pov|\
-    *.ad[asb]|*.asm|*.inc|*.[ch]|*.[ch]pp|*.[ch]xx|*.cc|*.hh|*.cs|*.go|\
+    *.ad[asb]|*.asm|*.inc|*.[ch]|*.[ch]pp|*.[ch]xx|*.cc|*.hh|*.cs|*.go|*.m|\
     *.diff|*.patch|*.rb|*.sql|*.ebuild|*.eclass|*.md|\
     *.java|*.groovy|*.py|*.xml|*.xps|*.xsl|\
     .bashrc|.bash_aliases|.bash_environment)
