@@ -63,7 +63,7 @@ foreach $option (keys %getopt) {
 	} else {
 		if ($tagname eq 'PICTURE' && $value eq 'nil') {
 			# special case: remove picture
-			$metaflac_for_all .= " --remove --block-type=PICTURE,PADDING --dont-use-padding";
+			$metaflac_for_pics .= " --remove --block-type=PICTURE,PADDING --dont-use-padding";
 		} else {
 			$metaflac_for_all .= " --remove-first-tag=$tagname";
 			$metaflac_for_all .= " --set-tag=\"$tagname=$value\"" unless 'nil' eq $value;
@@ -75,4 +75,6 @@ foreach $filename (@ARGV) {
 	$command = "metaflac $metaflac_for_this{$filename} $metaflac_for_all $filename";
 	#print "DEBUG: $command\n";
 	system($command);
+	$command = "metaflac $metaflac_for_pics $filename";
+	system($command) if $metaflac_for_pics;
 }
