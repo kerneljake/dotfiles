@@ -10,6 +10,8 @@ case "$1" in
 	pygmentize -O style=monokai "$1";;
     *.jmx)
 	pygmentize -O style=monokai -l xml "$1";;
+    *.lua)
+	pygmentize -O style=monokai -l lua "$1";;
     *)
         head -1 "$1" | grep "#\!/bin/bash" > /dev/null
         if [ "$?" -eq "0" ]; then
