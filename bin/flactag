@@ -14,6 +14,7 @@ $0 =~ s#.*/##;
 	    'g', 'GENRE',
             'l', 'TRACKTOTAL',
             'n', 'TRACKNUMBER',
+	    'p', 'PICTURE',
 	    't', 'TITLE',
 	    'y', 'DATE'
 );
@@ -34,10 +35,14 @@ getopt($optarg, \%getopt); # pass reference to array
 # show existing tags & exit if no arguments provided
 grep(s/(\W)/\\\1/g, @ARGV); # escape non-word chars in filenames for shell
 if (0 == %getopt) {
-	system("metaflac --list --block-type=VORBIS_COMMENT @ARGV");
+	foreach $file (@ARGV) {
+		system("metaflac --list --block-type=VORBIS_COMMENT $file");
+		system("metaflac --list --block-type=PICTURE $file | head -12");
+	}
 	exit;
 }
 
+# assemble the options
 foreach $option (keys %getopt) {
 	$tagname = $options{$option};
 	$value = $getopt{$option};
@@ -51,17 +56,25 @@ foreach $option (keys %getopt) {
 			$_ = $existing_tag;
 			eval $value;
 			$new_tag = $_;
-			#print "new $tagname is $new_tag\n";
+			#print "DEBUG: new $tagname is $new_tag\n";
 			$metaflac_for_this{$filename} .= " --remove-first-tag=$tagname";
 			$metaflac_for_this{$filename} .= " --set-tag=\"$tagname=$new_tag\"" unless 'nil' eq $value;
 		}
 	} else {
-		$metaflac_for_all .= " --remove-first-tag=$tagname";
-		$metaflac_for_all .= " --set-tag=\"$tagname=$value\"" unless 'nil' eq $value;
+		if ($tagname eq 'PICTURE' && $value eq 'nil') {
+			# special case: remove picture
+			$metaflac_for_pics .= " --remove --block-type=PICTURE,PADDING --dont-use-padding";
+		} else {
+			$metaflac_for_all .= " --remove-first-tag=$tagname";
+			$metaflac_for_all .= " --set-tag=\"$tagname=$value\"" unless 'nil' eq $value;
+		}
 	}
 }
+# modify each file
 foreach $filename (@ARGV) {
 	$command = "metaflac $metaflac_for_this{$filename} $metaflac_for_all $filename";
-	#print "$command\n";
+	#print "DEBUG: $command\n";
 	system($command);
+	$command = "metaflac $metaflac_for_pics $filename";
+	system($command) if $metaflac_for_pics;
 }
