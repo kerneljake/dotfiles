@@ -2,6 +2,8 @@ escape ^jj
 startup_message off
 # set a big scrolling buffer
 defscrollback 50000
+# scrollwheel buffer instead of commands
+termcapinfo xterm* ti@:te@
 # rest from FreeBSD
 termcapinfo xterm ti@:te@
 termcapinfo xterm-color ti@:te@
@@ -9,3 +11,4 @@ hardstatus alwayslastline
 hardstatus string '%{gk}[%{G}%H%{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}]%{=b C}[%m/%d/%y %C %A]%{W}'
 logtstamp on
 logtstamp after 1
+termcapinfo xterm* ti@:te@
