@@ -16,7 +16,8 @@ $0 =~ s#.*/##;
             'n', 'TRACKNUMBER',
 	    'p', 'PICTURE',
 	    't', 'TITLE',
-	    'y', 'DATE'
+	    'y', 'DATE',
+	    'z', 'MUSICBRAINZ'
 );
 
 # build USAGE
@@ -42,7 +43,13 @@ if (0 == %getopt) {
 	exit;
 }
 
-# assemble the options
+# assemble the musicbrainz tags I can zap
+@brainztags = qw(disc album artist albumartist track);
+foreach my $string (@brainztags) {
+	$string = uc("MUSICBRAINZ_" . $string . "ID");
+}
+
+# main loop
 foreach $option (keys %getopt) {
 	$tagname = $options{$option};
 	$value = $getopt{$option};
@@ -61,10 +68,17 @@ foreach $option (keys %getopt) {
 			$metaflac_for_this{$filename} .= " --set-tag=\"$tagname=$new_tag\"" unless 'nil' eq $value;
 		}
 	} else {
+		# not a regex, no need to read existing tag
 		if ($tagname eq 'PICTURE' && $value eq 'nil') {
-			# special case: remove picture
+			# special case: remove picture, must be run separately
 			$metaflac_for_pics .= " --remove --block-type=PICTURE,PADDING --dont-use-padding";
+		} elsif ($tagname eq 'MUSICBRAINZ' && $value eq 'nil') {
+			# zap musicbrainz tags
+			foreach my $tagname (@brainztags) {
+				$metaflac_for_all .= " --remove-first-tag=$tagname";
+			}
 		} else {
+			# set a tag to a value
 			$metaflac_for_all .= " --remove-first-tag=$tagname";
 			$metaflac_for_all .= " --set-tag=\"$tagname=$value\"" unless 'nil' eq $value;
 		}
@@ -75,6 +89,8 @@ foreach $filename (@ARGV) {
 	$command = "metaflac $metaflac_for_this{$filename} $metaflac_for_all $filename";
 	#print "DEBUG: $command\n";
 	system($command);
-	$command = "metaflac $metaflac_for_pics $filename";
-	system($command) if $metaflac_for_pics;
+	if ($metaflac_for_pics) {
+		$command = "metaflac $metaflac_for_pics $filename";
+		system($command);
+	}
 }
