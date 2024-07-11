@@ -30,9 +30,9 @@ if [[ -f $HOME/.zsh-git-prompt/zshrc.sh ]]; then
 fi
 
 # python pyenv
-eval "$(pyenv init --path)"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 # pyenv-virtualenv extension
 eval "$(pyenv virtualenv-init -)"
