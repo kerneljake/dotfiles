@@ -2,5 +2,10 @@
 
 # brew
 if [[ "$(uname -s)" == "Darwin" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    brew_dirs=("/opt/homebrew/bin" "/usr/local/bin")
+    for dir in "${brew_dirs[@]}"; do
+        if [ -x "$dir/brew" ]; then
+            eval "$($dir/brew shellenv)"
+        fi
+    done
 fi
