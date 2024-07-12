@@ -6,6 +6,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     for dir in "${brew_dirs[@]}"; do
         if [ -x "$dir/brew" ]; then
             eval "$($dir/brew shellenv)"
+            break
         fi
     done
 fi
