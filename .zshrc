@@ -15,6 +15,7 @@ bindkey -e
 function recent() { ls -lt $* | head -22; }
 function dos2unix() { perl -p -i -e 's/\r\n/\n/' $* }
 function over() { cd ../$* }
+function retitle() { echo -en "\e]0;$*\a" }
 
 export PATH="$HOME/bin:$PATH"
 
