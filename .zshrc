@@ -115,6 +115,13 @@ case "$system_name" in
     ;;
 esac
 
+distribution_name=`(lsb_release --short --id) 2> /dev/null`
+case "$distribution_name" in
+  Debian)
+    os_icon='🍥'
+    ;;
+esac
+
 # Usage: fill-line LEFT RIGHT
 #
 # Sets REPLY to LEFT<spaces>RIGHT with enough spaces in
