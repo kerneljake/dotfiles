@@ -17,6 +17,7 @@ $0 =~ s#.*/##;
 	    'l', 'TRACKTOTAL',
 	    'n', 'TRACKNUMBER',
 	    'p', 'PICTURE',
+	    's', 'ARTISTSORT',
 	    't', 'TITLE',
 	    'y', 'DATE',
 	    'z', 'MUSICBRAINZ'
