@@ -6,7 +6,8 @@ case "$1" in
     *.ad[asb]|*.asm|*.inc|*.[ch]|*.[ch]pp|*.[ch]xx|*.cc|*.hh|*.cs|*.go|*.kt|*.tf|*.m|\
     *.diff|*.patch|*.rb|*.sql|*.ebuild|*.eclass|*.md|\
     *.java|*.groovy|*.py|*.xml|*.xps|*.xsl|\
-    .bashrc|.bash_aliases|.bash_environment)
+    *.conf|\
+    .zshrc|.bashrc|.bash_aliases|.bash_environment)
 	pygmentize -O style=monokai "$1";;
     *.jmx)
 	pygmentize -O style=monokai -l xml "$1";;
