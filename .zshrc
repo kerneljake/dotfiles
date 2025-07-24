@@ -120,6 +120,9 @@ case "$distribution_name" in
   Debian)
     os_icon='🍥'
     ;;
+  Ubuntu)
+    os_icon='🛟'
+    ;;
   Raspbian)
     os_icon='🍓'
     ;;
