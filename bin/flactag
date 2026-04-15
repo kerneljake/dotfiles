@@ -17,7 +17,8 @@ $0 =~ s#.*/##;
 	    'l', 'TRACKTOTAL',
 	    'n', 'TRACKNUMBER',
 	    'p', 'PICTURE',
-	    's', 'ARTISTSORT',
+	    'r', 'ARTISTSORT',
+	    's', 'ALBUMARTISTSORT',
 	    't', 'TITLE',
 	    'y', 'DATE',
 	    'z', 'MUSICBRAINZ'
@@ -35,6 +36,7 @@ die "$USAGE" if !@ARGV || grep(/^--help$/, @ARGV);
 # parse options and arguments
 $optarg = join(':', keys(%options)) . ':'; # example:  a:m:g:t:d:
 getopt($optarg, \%getopt); # pass reference to array
+die "$USAGE" if !@ARGV;
 
 # show existing tags & exit if no arguments provided
 grep(s/(\W)/\\\1/g, @ARGV); # escape non-word chars in filenames for shell
