@@ -7,8 +7,8 @@ alias mygit='git --git-dir=$HOME/.mygit/ --work-tree=$HOME'
 
 alias history='history 1'
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000
+SAVEHIST=1000
 
 export LESS=CRiM
 export LESSOPEN='|~/.lessfilter %s'
