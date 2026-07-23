@@ -3,6 +3,7 @@
 # I use this for universal settings.
 
 alias ls='ls -CFs'
+alias exfil='exiftool -all='
 alias mygit='git --git-dir=$HOME/.mygit/ --work-tree=$HOME'
 
 alias history='history 1'
